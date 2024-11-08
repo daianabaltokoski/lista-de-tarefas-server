@@ -1,7 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors"
-import { listaTarefas } from "./controller";
+import { listaTarefas, adicionaTarefa } from "./controller";
+
 
 dotenv.config();
 
@@ -23,10 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/tasks", listaTarefas);
 
-app.post("/tasks", (req: Request, res: Response) => {
-  console.log(req.body);      // your JSON
-  res.send(req.body);    // echo the result back
-});
+app.post("/tasks", adicionaTarefa);
 
 app.delete("/tasks/:id", (req: Request, res: Response) => {
   const id = req.params.id;

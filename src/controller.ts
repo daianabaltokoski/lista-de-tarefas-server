@@ -17,3 +17,12 @@ export async function listaTarefas (_req: Request, res: Response) {
     )
     res.send(dbRes.rows);
   }
+
+  export async function adicionaTarefa (req: Request, res: Response) {
+    const tarefa = req.body
+    await client.query(
+        `INSERT INTO tarefas (tarefa, categoria, concluido) VALUES ($1, $2, $3);`,
+        [tarefa.tarefa, tarefa.categoria, tarefa.concluido]
+    )
+    res.send(tarefa);
+  }
