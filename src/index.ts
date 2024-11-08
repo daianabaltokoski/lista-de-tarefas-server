@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors"
+import { listaTarefas } from "./controller";
 
 dotenv.config();
 
@@ -20,9 +21,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-app.get("/tasks", (req: Request, res: Response) => {
-  res.send([]);
-});
+app.get("/tasks", listaTarefas);
 
 app.post("/tasks", (req: Request, res: Response) => {
   console.log(req.body);      // your JSON
