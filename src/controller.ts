@@ -20,9 +20,11 @@ export async function listaTarefas (_req: Request, res: Response) {
 
   export async function adicionaTarefa (req: Request, res: Response) {
     const tarefa = req.body
-    await client.query(
-        `INSERT INTO tarefas (tarefa, categoria, concluido) VALUES ($1, $2, $3);`,
+    const respostaConsulta = await client.query(
+        `INSERT INTO tarefas (tarefa, categoria, concluido) VALUES ($1, $2, $3) RETURNING id;`,
         [tarefa.tarefa, tarefa.categoria, tarefa.concluido]
     )
+
+    tarefa.id = respostaConsulta.rows[0].id
     res.send(tarefa);
   }
