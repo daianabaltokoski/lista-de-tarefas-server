@@ -28,3 +28,13 @@ export async function listaTarefas (_req: Request, res: Response) {
     tarefa.id = respostaConsulta.rows[0].id
     res.send(tarefa);
   }
+
+  export async function deletaTarefa(req: Request, res: Response) {
+    const idTarefa = req.params.id
+    await client.query(
+        'DELETE FROM tarefas WHERE id = $1',
+        [idTarefa]
+    )
+    res.send()
+    
+  }

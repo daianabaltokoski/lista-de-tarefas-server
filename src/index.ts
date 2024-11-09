@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors"
-import { listaTarefas, adicionaTarefa } from "./controller";
+import { listaTarefas, adicionaTarefa, deletaTarefa } from "./controller";
 
 
 dotenv.config();
@@ -26,11 +26,7 @@ app.get("/tasks", listaTarefas);
 
 app.post("/tasks", adicionaTarefa);
 
-app.delete("/tasks/:id", (req: Request, res: Response) => {
-  const id = req.params.id;
-  console.log(id)
-  res.send("");
-})
+app.delete("/tasks/:id", deletaTarefa)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
