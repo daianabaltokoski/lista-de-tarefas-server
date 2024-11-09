@@ -35,6 +35,15 @@ export async function listaTarefas (_req: Request, res: Response) {
         'DELETE FROM tarefas WHERE id = $1',
         [idTarefa]
     )
-    res.send()
-    
+    res.send() 
   }
+
+    export async function atualizaTarefa(req: Request, res: Response) {
+        const idTarefa = req.params.id
+        const tarefa = req.body
+        await client.query(
+            'UPDATE tarefas SET tarefa = $1, categoria = $2, concluido = $3 WHERE id = $4',
+            [tarefa.tarefa, tarefa.categoria, tarefa.concluido, idTarefa]
+        )
+        res.send(tarefa)
+    }
