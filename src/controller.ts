@@ -1,4 +1,4 @@
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 import dotenv from "dotenv";
 import pg from 'pg'
 
@@ -11,34 +11,36 @@ const client = new Client({
 })
 client.connect()
 
-export async function listaTarefas (_req: Request, res: Response) {
-    const dbRes = await client.query(
-        'SELECT * FROM tarefas'
-    )
-    res.send(dbRes.rows);
-  }
+export default class TarefasController {
 
-  export async function adicionaTarefa (req: Request, res: Response) {
-    const tarefa = req.body
-    const respostaConsulta = await client.query(
-        `INSERT INTO tarefas (tarefa, categoria, concluido) VALUES ($1, $2, $3) RETURNING id;`,
-        [tarefa.tarefa, tarefa.categoria, tarefa.concluido]
-    )
+    public async listaTarefas(_req: Request, res: Response) {
+        const dbRes = await client.query(
+            'SELECT * FROM tarefas ORDER BY id DESC'
+        )
+        res.send(dbRes.rows);
+    }
 
-    tarefa.id = respostaConsulta.rows[0].id
-    res.send(tarefa);
-  }
+    public async adicionaTarefa(req: Request, res: Response) {
+        const tarefa = req.body
+        const respostaConsulta = await client.query(
+            `INSERT INTO tarefas (tarefa, categoria, concluido) VALUES ($1, $2, $3) RETURNING id;`,
+            [tarefa.tarefa, tarefa.categoria, tarefa.concluido]
+        )
 
-  export async function deletaTarefa(req: Request, res: Response) {
-    const idTarefa = req.params.id
-    await client.query(
-        'DELETE FROM tarefas WHERE id = $1',
-        [idTarefa]
-    )
-    res.send() 
-  }
+        tarefa.id = respostaConsulta.rows[0].id
+        res.send(tarefa);
+    }
 
-    export async function atualizaTarefa(req: Request, res: Response) {
+    public async deletaTarefa(req: Request, res: Response) {
+        const idTarefa = req.params.id
+        await client.query(
+            'DELETE FROM tarefas WHERE id = $1',
+            [idTarefa]
+        )
+        res.send()
+    }
+
+    public async atualizaTarefa(req: Request, res: Response) {
         const idTarefa = req.params.id
         const tarefa = req.body
         await client.query(
@@ -47,3 +49,4 @@ export async function listaTarefas (_req: Request, res: Response) {
         )
         res.send(tarefa)
     }
+}

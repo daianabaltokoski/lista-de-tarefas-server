@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors"
-import { listaTarefas, adicionaTarefa, deletaTarefa, atualizaTarefa } from "./controller";
+import TarefasController from "./controller";
 
 
 dotenv.config();
@@ -22,13 +22,15 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-app.get("/tasks", listaTarefas);
+const tarefaController: TarefasController = new TarefasController()
 
-app.post("/tasks", adicionaTarefa);
+app.get("/tasks", tarefaController.listaTarefas);
 
-app.delete("/tasks/:id", deletaTarefa)
+app.post("/tasks", tarefaController.adicionaTarefa);
 
-app.put("/tasks/:id", atualizaTarefa)
+app.delete("/tasks/:id", tarefaController.deletaTarefa)
+
+app.put("/tasks/:id", tarefaController.atualizaTarefa)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
